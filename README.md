@@ -92,7 +92,7 @@ Let's know what above paramaters are:<br>
 |classes_names|name of classes you want to check weather the model is<br> detecting or not
 
 <b>Optional Parameters (Fale: by_default):</b>
-|url|url=True, if you have only url of images|
+|url|Usage|
 |:---------------------------|:--------------------------|
 |model_name|enter model_name if you want to run any specific model
 |reponse|if you want to get reponse from model|
