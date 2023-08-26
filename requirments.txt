@@ -1,0 +1,11 @@
+requests
+opencv-python
+natsort
+tqdm
+pandas
+scikit-learn
+matplotlib
+seaborn
+icrawler
+bs4
+shutils
