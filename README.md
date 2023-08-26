@@ -11,7 +11,7 @@
 
 ## 1. clone the repository:
 
-`git clone https://github.com/` # still need to clone the repository
+`https://github.com/mirfan-ahmad/ML-Models-QC.git`
 
 ## 2. How to install the dependencies:
 
