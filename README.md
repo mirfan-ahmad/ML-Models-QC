@@ -28,7 +28,7 @@ If desired images couldn't be found in Google Images, write your own scraper or 
 **Clone-Repository:** `https://github.com/mirfan-ahmad/Scraping.git`
 
 ```bash
-Either using above scrapers or write your own try to write the scraper which only scrape the links of the images and store them into text file in following format:
+Either using above scrapers or try to write your own scraper which will only scrape the links of the images and store them into text file in following format:
 links1\n
 links2\n
 .
