@@ -24,6 +24,8 @@
 
 ```bash
 If desired images couldn't be found in Google Images, write your own scraper or try to clone my following repository <if your desired website already scraped>
+
+Note: This script will download the images from Google and also save the links of the images in links.txt file as well.
 ```
 **Clone-Repository:** `https://github.com/mirfan-ahmad/Scraping.git`
 
