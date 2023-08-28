@@ -83,7 +83,7 @@ In this way all the images will be copied to integrated folder and classified in
 ## 7. How to Get Results from Model deployed on cloud only?
 
 **Command**:<br>
-`python get_model_result.py <img_dir> <output_dir> <endpoint> <classes_names> <optional Parameters>`
+`python get_model_result.py <endpoint> <classes_names> <img_dir> <output_dir> <optional Parameters>`
 
 Let's know what above paramaters are:<br>
 |<b>Parametes |<b>Usage|
@@ -96,6 +96,7 @@ Let's know what above paramaters are:<br>
 <b>Optional Parameters (Fale: by_default):</b>
 |<b>Parameters|<b>Usage|
 |:---------------------------|:--------------------------|
+|url|url=True, If you have links of images.
 |model_name|enter model_name if you want to run any specific model
 |reponse|if you want to get reponse from model|
 |single_img|if you want to get result on single image|

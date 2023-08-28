@@ -9,3 +9,4 @@ seaborn
 icrawler
 bs4
 shutils
+json

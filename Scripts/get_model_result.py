@@ -3,28 +3,48 @@ import os
 import base64
 import json
 import cv2
+import sys
+import ast
+import numpy as np
 from natsort import natsorted
 from tqdm import tqdm
-import numpy as np
+
+
 
 class get_result_from_model():
-    def __init__(self, Input, Output, endpoint, classes, **kwargs):
+    def __init__(self, endpoint, classes, Input, Output, **kwargs):
         self.endpoint = endpoint
         self.classes = list(classes)
         self.input = Input
+        self.kwargs = kwargs
         self.output = Output
-        self.url = kwargs['url']
-        self.model_name = kwargs['model_name']
-        self.Response = kwargs['response']
-        self.single_img = kwargs['single_img']
         
-        if self.single_img == 'y':
-            print(self.process_image(self.input))
+        self.__optional = list(kwargs.keys())
+        self.__keys = ['single_img', 'url', 'model_name', 'response']
+        self.__set_kwargs()
+        print(self.kwargs)
+        
+        if self.kwargs['single_img'] == 'y':
+            self.Response = kwargs['response']
+            print(self.__process_image(self.input))
+
         else:
-            if self.url:
-                self.process_file()
+            if self.kwargs['url']:
+                self.__process_file()
             else:
-                self.process_folder()
+                self.__process_folder()
+    
+
+    def __set_kwargs(self):
+        for idx, k in enumerate(self.__keys):
+            try:
+                self.kwargs[self.__optional[idx]] = True
+            except:
+                pass
+            if k not in self.__optional:
+                self.kwargs[k] = False 
+            
+
 
     def __encode_image(self, image):
         _, img_byts = cv2.imencode('.jpg', image)
@@ -40,7 +60,17 @@ class get_result_from_model():
 
 
     def __process_image(self, image):
-        if not self.url:
+        if self.kwargs['url']:
+            json_data = {
+            "instances": [
+                {
+                    'image_url': image,
+                    }
+                ]
+            }
+
+        else:
+            print(image)
             image = cv2.imread(image)
             json_data = {
             "instances": [
@@ -50,23 +80,15 @@ class get_result_from_model():
                 ]
             }
 
-        else:
-            json_data = {
-            "instances": [
-                {
-                    'image_url': image,
-                    }
-                ]
-            }
-
-        if not self.model_name:
+        if self.kwargs['model_name']:
             headers = {
                 'Content-Type': 'application/json',
+                'model_name': self.kwargs['model_name']
             }
+            
         else:
             headers = {
                 'Content-Type': 'application/json',
-                'model_name': self.model_name
             }
 
         link = self.endpoint
@@ -76,33 +98,30 @@ class get_result_from_model():
         
         # if mask:
         #     det = json.loads(image_string)
-        #     img_cv2 = self.decode_base64_image(det['result'])
+        #     img_cv2 = self.__decode_base64_image(det['result'])
         #     cv2.imwrite('image4.jpg', img_cv2)
         #     print('Images has been written successfully')
         
         try:
-            # keys_lst = ['classes']
-            det = json.loads(image_string)
-            # for key, item in det.items():
-            #     keys_lst.append(key)
-            
-            # response = det['result']['classes']   # need to manually check the response
-            if not self.Response:
-                RESPONSE = ''
-                for Class in self.classes:
-                    if Class in response:
-                        RESPONSE += '1,'
-                    else:
-                        RESPONSE += '0,'
-                return RESPONSE
-            
-            else:
+            det = json.loads(image_string)            
+            print(det)
+            response = det['result']['classes']   # need to manually check the response
+            if self.kwargs['response']:
                 RESPONSE = ''
                 for Class in self.classes:
                     if Class in response:
                         RESPONSE += f'{Class},'
                     else:
                         RESPONSE += ''
+                return RESPONSE
+            
+            else:
+                RESPONSE = ''
+                for Class in self.classes:
+                    if Class in response:
+                        RESPONSE += '1,'
+                    else:
+                        RESPONSE += '0,'
                 return RESPONSE
 
         except Exception as e:
@@ -115,24 +134,43 @@ class get_result_from_model():
         with open(f"{self.output}.csv", 'a') as f1:
             for image_filename in tqdm(images):
                 image_path = os.path.join(self.input, image_filename)
-                RESPONSE = self.process_image(image_path)  # Pass the correct arguments
+                try:
+                    RESPONSE = self.__process_image(image_path)  # Pass the correct arguments
+                except Exception as e:
+                    print(f'Error Raised on Image:{image_path}', e)
+                    f1.write(f'{image_filename},{e}\n')
+                    continue
                 f1.write(f'{image_filename},{RESPONSE}\b\n')
 
 
     def __process_file(self):
+        LINKS = []
         with open(self.input, 'r') as f:
-            with open(f"{self.output}.csv", 'w') as f:
-                while True:
-                    link = f.readline().split('\n')[0]
-                    if link != '':
-                        RESPONSE = self.process_image(link, url=True)
-                        f.write(f'{link},{RESPONSE}\n')
-                    else:
-                        break
+            while True:
+                lnk = f.readline().split('\n')[0]
+                if lnk == '':
+                    break
+                LINKS.append(lnk)
 
-# if __name__ == '__main__':
-#     endpoint=''
-#     class_name='bedroom'
-#     Input='input.jpg'
-#     Output = ''
-#     get_result = get_result_from_model(Input, Output, endpoint, url=True, *class_name)
+        LINKS = natsorted(LINKS)
+        
+        with open(f"{self.output}/predicted.csv", 'w') as f1:
+            for link in tqdm(LINKS):
+                RESPONSE = self.__process_image(link)
+                f1.write(f'{link},{RESPONSE}\n')
+
+if __name__ == '__main__':
+    endpoint = sys.argv[1]
+    class_name = sys.argv[2]
+    class_name = ast.literal_eval(class_name)
+    Input = sys.argv[3]
+    Output = sys.argv[4]
+    optional_args = sys.argv[5:]
+    
+    optional_args_dict = {}
+    for arg in optional_args:
+        key, value = arg.split('=')
+        optional_args_dict[key] = value
+    
+    get_result = get_result_from_model(endpoint, class_name, Input, Output, **optional_args_dict)
+
