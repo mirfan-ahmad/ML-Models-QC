@@ -33,7 +33,6 @@ class Download:
                 self.links.append(url)
                 
 
-
 if __name__ == '__main__':
     file_name = sys.argv[1]
     dir = sys.argv[2]

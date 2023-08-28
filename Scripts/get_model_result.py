@@ -10,7 +10,6 @@ from natsort import natsorted
 from tqdm import tqdm
 
 
-
 class get_result_from_model():
     def __init__(self, endpoint, classes, Input, Output, **kwargs):
         self.endpoint = endpoint
@@ -22,9 +21,8 @@ class get_result_from_model():
         self.__optional = list(kwargs.keys())
         self.__keys = ['single_img', 'url', 'model_name', 'response']
         self.__set_kwargs()
-        print(self.kwargs)
         
-        if self.kwargs['single_img'] == 'y':
+        if self.kwargs['single_img']:
             self.Response = kwargs['response']
             print(self.__process_image(self.input))
 
@@ -65,12 +63,11 @@ class get_result_from_model():
             "instances": [
                 {
                     'image_url': image,
-                    }
+                    }   
                 ]
             }
 
         else:
-            print(image)
             image = cv2.imread(image)
             json_data = {
             "instances": [
@@ -104,7 +101,6 @@ class get_result_from_model():
         
         try:
             det = json.loads(image_string)            
-            print(det)
             response = det['result']['classes']   # need to manually check the response
             if self.kwargs['response']:
                 RESPONSE = ''
@@ -125,33 +121,38 @@ class get_result_from_model():
                 return RESPONSE
 
         except Exception as e:
-            print('Exception Raised:', e)
+            print('Exception Raised:', f'{image}', e)
             return '-1,' * len(self.classes)
 
 
     def __process_folder(self):
         images = natsorted(os.listdir(self.input))
+        
         with open(f"{self.output}.csv", 'a') as f1:
             for image_filename in tqdm(images):
                 image_path = os.path.join(self.input, image_filename)
+                
                 try:
                     RESPONSE = self.__process_image(image_path)  # Pass the correct arguments
+
                 except Exception as e:
                     print(f'Error Raised on Image:{image_path}', e)
                     f1.write(f'{image_filename},{e}\n')
                     continue
+
                 f1.write(f'{image_filename},{RESPONSE}\b\n')
 
 
     def __process_file(self):
         LINKS = []
+        
         with open(self.input, 'r') as f:
             while True:
                 lnk = f.readline().split('\n')[0]
+                
                 if lnk == '':
                     break
                 LINKS.append(lnk)
-
         LINKS = natsorted(LINKS)
         
         with open(f"{self.output}/predicted.csv", 'w') as f1:

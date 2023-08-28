@@ -1,12 +1,12 @@
-requests
 opencv-python
-natsort
-tqdm
-pandas
 scikit-learn
+pandas
 matplotlib
 seaborn
-icrawler
+requests
 bs4
+icrawler
 shutils
+natsort
 json
+tqdm

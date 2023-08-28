@@ -1,4 +1,4 @@
-## How to use this package for QA/QC
+## How to use this package for QA
 
 ### Steps involved in QA/QC (when doing Manually)
 1. Scraping the data
@@ -83,7 +83,7 @@ In this way all the images will be copied to integrated folder and classified in
 ## 7. How to Get Results from Model deployed on cloud only?
 
 **Command**:<br>
-`python get_model_result.py <endpoint> <classes_names> <img_dir> <output_dir> <optional Parameters>`
+`python get_model_result.py <endpoint> <"[classes_names]"> <img_dir> <output_dir> <optional Parameters>`
 
 Let's know what above paramaters are:<br>
 |<b>Parametes |<b>Usage|
@@ -91,7 +91,7 @@ Let's know what above paramaters are:<br>
 |img_dir      |Input Image_dir Path              |
 |output_dir   |Path to output directory          |
 |endpoint     |endpoint of deployed model             |
-|classes_names|name of classes you want to check weather the model is<br> detecting or not
+|classes_names|name of classes you want to check weather the model is detecting or not<br>Format : "['class1', 'class2', ... , 'classN']"
 
 <b>Optional Parameters (Fale: by_default):</b>
 |<b>Parameters|<b>Usage|
