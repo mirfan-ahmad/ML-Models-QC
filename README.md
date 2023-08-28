@@ -85,6 +85,12 @@ In this way all the images will be copied to integrated folder and classified in
 **Command**:<br>
 `python get_model_result.py <endpoint> <"[classes_names]"> <img_dir> <output_dir> <optional Parameters>`
 
+```bash
+Example-command:
+python get_model_result.py https://us-central1-lucid-box-387617.cloudfunctions.net/compliance-detection "['signs', 'signs_date', 'text_name', 'text_address', 'text_date', 'text_company', 'text_phone_number', 'text_email']" /home/umair/Desktop/irfan/QC/ComplianceDetection/SignBoard/Files/Images_links.txt ../Files url=True
+OR
+python get_model_result.py https://us-central1-lucid-box-387617.cloudfunctions.net/compliance-detection "['signs', 'signs_date', 'text_name', 'text_address', 'text_date', 'text_company', 'text_phone_number', 'text_email']" https://img.freepik.com/free-photo/cute-animals-group-white-background_23-2150038558.jpg ../Files url=True single_img=True
+```
 Let's know what above paramaters are:<br>
 |<b>Parametes |<b>Usage|
 |:---------------------------|:--------------------------|
