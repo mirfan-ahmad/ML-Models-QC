@@ -89,7 +89,7 @@ In this way all the images will be copied to integrated folder and classified in
 Example-command:
 python get_model_result.py endpoint "['signs', 'signs_date', 'text_name', 'text_address', 'text_date', 'text_company', 'text_phone_number', 'text_email']" /Input_dir/Images_links.txt output_dir url=True
 OR
-python get_model_result.py <endpoint> "['signs', 'signs_date', 'text_name', 'text_address', 'text_date', 'text_company', 'text_phone_number', 'text_email']" https://img.freepik.com/free-photo/cute-animals-group-white-background_23-2150038558.jpg output_dir url=True single_img=True
+python get_model_result.py endpoint "['signs', 'signs_date', 'text_name', 'text_address', 'text_date', 'text_company', 'text_phone_number', 'text_email']" https://img.freepik.com/free-photo/cute-animals-group-white-background_23-2150038558.jpg output_dir url=True single_img=True
 ```
 Let's know what above paramaters are:<br>
 |<b>Parametes |<b>Usage|
