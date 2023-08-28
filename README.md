@@ -37,11 +37,11 @@ links2\n
 linkN
 ```
 
-### How to Download the images using links you have scraped?
+## 4. How to Download the images using links you have scraped?
 
 `python download_images_via_link.py <txt_filename> <output-dir>`
 
-## 4. How to annotate the data?
+## 5. How to annotate the data?
 
 **annotate_data** `python annotate.py <img_dir>`
 
@@ -72,13 +72,13 @@ Press -N- to choose <classN>
 In this way all the images will be copied to integrated folder and classified into seperate folders.
 ```
 
-## 5. How to create true labels?
+## 6. How to create true labels?
 ### Navigate to the scripts directory
 
 **If 1 folder**:<br>`python create_true_labels.py <img_dir>`<br>
 **If >1 folder**:<br>`python create_true_labels.py <img_dir1> <img_dir2> .... <img_dirN>`
 
-## 6. How to Get Results from Model deployed on cloud only?
+## 7. How to Get Results from Model deployed on cloud only?
 
 **Command**:<br>
 `python get_model_result.py <img_dir> <output_dir> <endpoint> <classes_names> <optional Parameters>`
@@ -101,7 +101,7 @@ Let's know what above paramaters are:<br>
 Note: parameters case-sensitivity shouldn't be undermined
 
 
-## 7. How to Evaluate the Model?
+## 8. How to Evaluate the Model?
 ### Navigate to the script directory
 
 **Evaluate**: <br>`python evaluation.py <true_labels> <true_attribute> <predicted_labels> <predicted_attribute> <matrix_name>`
