@@ -11,7 +11,7 @@ class Annotate_Images:
         self.img_dir = img_dir
         self.main_dir = main_dir
         self.__create_folders()
-        print(self.meta)
+        print(f'\n{self.meta}')
         self.__annotate()
     
     def __create_folders(self):
@@ -41,15 +41,11 @@ class Annotate_Images:
                 cv2.imshow(str(idx), image)
                 key = chr(cv2.waitKey(0) & 0xFF)
                 
-                while key != '0':
-                    while True:
-                        if key in self.meta_dict:
-                            print(self.meta_dict[key])
-                            self.__paste(self.meta_dict[key], img_name)
-                            key1 = chr(cv2.waitKey(0) & 0xFF)
-                            if key1 == ord(q):
-                                break
-                        cv2.destroyAllWindows()
+                while True:
+                    key = chr(cv2.waitKey(0) & 0xFF)
+                    if key in self.meta_dict:
+                        self.__paste(self.meta_dict[key], img_name)
+                    if key == 'q':
                         break
                 cv2.destroyAllWindows()
 
