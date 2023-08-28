@@ -78,7 +78,7 @@ In this way all the images will be copied to integrated folder and classified in
 **If 1 folder**:<br>`python create_true_labels.py <img_dir>`<br>
 **If >1 folder**:<br>`python create_true_labels.py <img_dir1> <img_dir2> .... <img_dirN>`
 
-## 6. How Get Results from Model deployed on cloud only?
+## 6. How to Get Results from Model deployed on cloud only?
 
 **Command**:<br>
 `python get_model_result.py <img_dir> <output_dir> <endpoint> <classes_names> <optional Parameters>`
