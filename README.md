@@ -77,8 +77,8 @@ In this way all the images will be copied to integrated folder and classified in
 ## 6. How to create true labels?
 ### Navigate to the scripts directory
 
-**If 1 folder**:<br>`python create_true_labels.py <img_dir>`<br>
-**If >1 folder**:<br>`python create_true_labels.py <img_dir1> <img_dir2> .... <img_dirN>`
+**If 1 folder**:<br>`python create_true_labels.py <img_dir> <storage> <annotated_img>`<br>
+**If >1 folder**:<br>`python create_true_labels.py <img_dir1> <storage> <annotated_img1> .... <annotated_imgN>`
 
 ## 7. How to Get Results from Model deployed on cloud only?
 
@@ -106,6 +106,7 @@ Let's know what above paramaters are:<br>
 |model_name|enter model_name if you want to run any specific model
 |reponse|if you want to get reponse from model|
 |single_img|if you want to get result on single image|
+|generative|generative=True<br>If you want to get the result as image from <br>Generative Models either masks or images
 
 Note: parameters case-sensitivity shouldn't be undermined
 

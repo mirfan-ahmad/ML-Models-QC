@@ -4,10 +4,10 @@ from natsort import natsorted
 from tqdm import tqdm
 
 class Create_Labels:
-    def __init__(self, mix_downloaded, *args):
+    def __init__(self, mix_downloaded, sotrage_path, *args):
         self.mix_downloaded = mix_downloaded
         self.true_annotated = list(args)
-        self.storage_path = os.mkdir(os.path.jouin(os.getcwd(), 'Labels'))
+        self.storage_path = sotrage_path
         self.__create_from_folders()
 
 
@@ -15,7 +15,7 @@ class Create_Labels:
         images = natsorted(os.listdir(self.mix_downloaded))
         images_annotated = []
         for true in self.true_annotated:
-            images_annotated.append(natsorted(os.listdir(os.path.join(os.getcwd(), true))))
+            images_annotated.append(natsorted(os.listdir(os.path.join(self.storage_path, true))))
 
         with open(f'{self.storage_path}/labels.csv', 'w') as file:
             index = 0
@@ -33,6 +33,7 @@ class Create_Labels:
 
 if __name__ == '__main__':
     mix_downloaded = sys.argv[1]
-    true_annotated = sys.argv[2:]
-
-    Create_Labels(mix_downloaded, *true_annotated)
+    storage = sys.argv[2]
+    true_annotated = sys.argv[3:]
+    
+    Create_Labels(mix_downloaded, storage, *true_annotated)

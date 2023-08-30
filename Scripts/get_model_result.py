@@ -19,7 +19,7 @@ class get_result_from_model():
         self.output = Output
         
         self.__optional = list(kwargs.keys())
-        self.__keys = ['single_img', 'url', 'model_name', 'response']
+        self.__keys = ['single_img', 'url', 'model_name', 'response', 'generative']
         self.__set_kwargs()
         
         if self.kwargs['single_img']:
@@ -93,36 +93,38 @@ class get_result_from_model():
         response = requests.post(link, headers=headers, json=json_data)
         image_string = response.content
         
-        # if mask:
-        #     det = json.loads(image_string)
-        #     img_cv2 = self.__decode_base64_image(det['result'])
-        #     cv2.imwrite('image4.jpg', img_cv2)
-        #     print('Images has been written successfully')
-        
-        try:
-            det = json.loads(image_string)            
-            response = det['result']['classes']   # need to manually check the response
-            if self.kwargs['response']:
-                RESPONSE = ''
-                for Class in self.classes:
-                    if Class in response:
-                        RESPONSE += f'{Class},'
-                    else:
-                        RESPONSE += ''
-                return RESPONSE
+        if self.kwargs['generative']:
+            det = json.loads(image_string)
+            img_cv2 = self.__decode_base64_image(det['result'])
+            cv2.imwrite('image4.jpg', img_cv2)
+            print('Images has been written successfully')
             
-            else:
-                RESPONSE = ''
-                for Class in self.classes:
-                    if Class in response:
-                        RESPONSE += '1,'
-                    else:
-                        RESPONSE += '0,'
-                return RESPONSE
+        else:
+            
+            try:
+                det = json.loads(image_string)            
+                response = det['result']['classes']   # need to manually check the response
+                if self.kwargs['response']:
+                    RESPONSE = ''
+                    for Class in self.classes:
+                        if Class in response:
+                            RESPONSE += f'{Class},'
+                        else:
+                            RESPONSE += ''
+                    return RESPONSE
+                
+                else:
+                    RESPONSE = ''
+                    for Class in self.classes:
+                        if Class in response:
+                            RESPONSE += '1,'
+                        else:
+                            RESPONSE += '0,'
+                    return RESPONSE
 
-        except Exception as e:
-            print('Exception Raised:', f'{image}', e)
-            return '-1,' * len(self.classes)
+            except Exception as e:
+                print('Exception Raised:', f'{image}', e)
+                return '-1,' * len(self.classes)
 
 
     def __process_folder(self):
@@ -155,7 +157,7 @@ class get_result_from_model():
                 LINKS.append(lnk)
         LINKS = natsorted(LINKS)
         
-        with open(f"{self.output}/predicted.csv", 'w') as f1:
+        with open(f"{self.output}/predicted.csv", 'a') as f1:
             for link in tqdm(LINKS):
                 RESPONSE = self.__process_image(link)
                 f1.write(f'{link},{RESPONSE}\n')
